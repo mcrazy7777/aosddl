@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+	android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- Density check -->
+	<TextView android:id="@+id/textView1" android:layout_height="wrap_content"
+		android:text="@string/label_density_check" android:layout_width="match_parent" android:textStyle="bold"/>
+
+	<ImageView android:id="@+id/imageView1" android:layout_height="wrap_content" android:layout_below="@+id/textView1"
+		android:layout_width="wrap_content" android:src="@drawable/density"></ImageView>
+		
+	<!-- size check -->
+	<TextView android:id="@+id/textView2" android:layout_height="wrap_content"
+		android:text="@string/label_size_check" android:layout_width="match_parent" android:layout_below="@+id/imageView1" android:textStyle="bold"/>
+
+	<ImageView android:id="@+id/imageView2" android:layout_height="wrap_content" android:layout_below="@+id/textView2"
+		android:layout_width="wrap_content" android:src="@drawable/size"></ImageView>
+		
+	<!-- aspect ratio check -->
+	<TextView android:id="@+id/textView3" android:layout_height="wrap_content"
+		android:text="@string/label_aspect_ratio_check" android:layout_width="match_parent" android:layout_below="@+id/imageView2" android:textStyle="bold"/>
+
+	<ImageView android:id="@+id/imageView3" android:layout_height="wrap_content" android:layout_below="@+id/textView3"
+		android:layout_width="wrap_content" android:src="@drawable/aspect"></ImageView>
+		
+	<!-- orientation check -->
+	<TextView android:id="@+id/textView4" android:layout_height="wrap_content"
+		android:text="@string/label_orientation_check" android:layout_width="match_parent" android:layout_below="@+id/imageView3" android:textStyle="bold"/>
+
+	<ImageView android:id="@+id/imageView4" android:layout_height="wrap_content" android:layout_below="@+id/textView4"
+		android:layout_width="wrap_content" android:src="@drawable/orientation"></ImageView>
+		
+	<!-- dock mode check -->
+	<TextView android:id="@+id/textView5" android:layout_height="wrap_content"
+		android:text="@string/label_dock_mode_check" android:layout_width="match_parent" android:layout_below="@+id/imageView4" android:textStyle="bold"/>
+
+	<ImageView android:id="@+id/imageView5" android:layout_height="wrap_content" android:layout_below="@+id/textView5"
+		android:layout_width="wrap_content" android:src="@drawable/dock"></ImageView>
+		
+	<!-- night mode check -->
+	<TextView android:id="@+id/textView6" android:layout_height="wrap_content"
+		android:text="@string/label_night_mode_check" android:layout_width="match_parent" android:layout_below="@+id/imageView5" android:textStyle="bold"/>
+
+	<ImageView android:id="@+id/imageView6" android:layout_height="wrap_content" android:layout_below="@+id/textView6"
+		android:layout_width="wrap_content" android:src="@drawable/night"></ImageView>
+	
+	<!-- resolution check -->
+	<TextView android:id="@+id/textView7" android:layout_height="wrap_content"
+		android:text="@string/label_actual_resolution" android:layout_width="match_parent" android:layout_below="@+id/imageView6" android:textStyle="bold"/>
+
+	<TextView android:id="@+id/lblResolution" android:layout_height="wrap_content" android:layout_below="@+id/textView7"
+		android:layout_width="match_parent"/>
+		
+	<!-- density check -->
+	<TextView android:id="@+id/textView8" android:layout_height="wrap_content"
+		android:text="@string/label_actual_density" android:layout_width="match_parent" android:layout_below="@+id/lblResolution" android:textStyle="bold"/>
+
+	<TextView android:id="@+id/lblDensity" android:layout_height="wrap_content" android:layout_below="@+id/textView8"
+		android:layout_width="match_parent"/>
+	
+	<!-- density check -->
+	<TextView android:id="@+id/textView9" android:layout_height="wrap_content"
+		android:text="@string/label_device_info" android:layout_width="match_parent" android:layout_below="@+id/lblDensity" android:textStyle="bold"/>
+
+	<TextView android:id="@+id/lblDeviceInfo" android:layout_height="wrap_content" android:layout_below="@+id/textView9"
+		android:layout_width="match_parent"/>
+		
+</RelativeLayout>
