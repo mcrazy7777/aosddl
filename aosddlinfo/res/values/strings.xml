@@ -11,5 +11,7 @@
     <string name="label_actual_resolution">Resolution (W X H)</string>
     <string name="label_actual_density">Density (via DisplayMetrics)</string>
     <string name="label_device_info">Device Info</string>
+    <string name="label_build_properties">Build Properties</string>
+    <string name="label_screen_info">Screen Info</string>
     
 </resources>
