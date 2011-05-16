@@ -4,7 +4,7 @@ import android.os.Build;
 import android.util.Log;
 
 public enum DeviceType {
-	MOTOROLA_ATRIX(1.6f), UNKNOWN(1f);
+	MOTOROLA_ATRIX(1.6f), LG_GX2(1.6f), UNKNOWN(1f);
 
 	private float textScaleMultiplier;
 
@@ -15,11 +15,10 @@ public enum DeviceType {
 	public static DeviceType detect() {
 		DeviceType detectedType = UNKNOWN;
 
-		if (Build.MANUFACTURER.equals("motorola")
-				&& Build.DEVICE.equals("olympus")
-				&& Build.MODEL.equals("MB860")) {
-
+		if (isMotorolaAtrix()) {
 			detectedType = MOTOROLA_ATRIX;
+		} else if (isLgGx2()) {
+			detectedType = LG_GX2;
 		}
 
 		Log.i("DeviceType", "Detected DeviceType: " + detectedType.name());
@@ -28,5 +27,16 @@ public enum DeviceType {
 
 	public float getTextScaleMultiplier() {
 		return textScaleMultiplier;
+	}
+
+	private static boolean isLgGx2() {
+		return Build.MANUFACTURER.equals("lge") && Build.DEVICE.equals("p999")
+				&& Build.MODEL.equals("LG-P999");
+	}
+
+	private static boolean isMotorolaAtrix() {
+		return Build.MANUFACTURER.equals("motorola")
+				&& Build.DEVICE.equals("olympus")
+				&& Build.MODEL.equals("MB860");
 	}
 }
