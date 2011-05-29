@@ -189,18 +189,7 @@ public class DeviceReport extends ListActivity {
 			if (extraEmail != null) {
 				emailEditText.setText(extraEmail);
 			} else {
-				String packageName = getPackageName();
-				PackageManager packageMan = getPackageManager();
-				if (packageMan.checkPermission(
-						"android.permission.GET_ACCOUNTS", packageName) == PackageManager.PERMISSION_GRANTED) {
-					AccountManager accountManager = AccountManager.get(this);
-					Account[] accounts = accountManager
-							.getAccountsByType("com.google");
-					if (accounts.length > 0) {
-						emailEditText.setText(accounts[0].name);
-						// params.put("email", accounts[0].name);
-					}
-				}
+				setEmailFromDevice();
 			}
 
 			if (extraRef != null) {
@@ -210,8 +199,24 @@ public class DeviceReport extends ListActivity {
 			if (extraTags != null) {
 				tagsEditText.setText(extraTags);
 			}
+		} else {
+			setEmailFromDevice();
 		}
 
+	}
+
+	private void setEmailFromDevice() {
+		String packageName = getPackageName();
+		PackageManager packageMan = getPackageManager();
+		if (packageMan.checkPermission("android.permission.GET_ACCOUNTS",
+				packageName) == PackageManager.PERMISSION_GRANTED) {
+			AccountManager accountManager = AccountManager.get(this);
+			Account[] accounts = accountManager.getAccountsByType("com.google");
+			if (accounts.length > 0) {
+				emailEditText.setText(accounts[0].name);
+				// params.put("email", accounts[0].name);
+			}
+		}
 	}
 
 	private void updateParams() {
