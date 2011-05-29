@@ -1,4 +1,4 @@
-package com.google.code.aosddl.report;
+package aosddl.code.google.com.report;
 
 import android.os.Build;
 import android.os.SystemProperties;

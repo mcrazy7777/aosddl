@@ -1,4 +1,4 @@
-package com.google.code.aosddl.report.ws;
+package aosddl.code.google.com.report.ws;
 
 import java.io.BufferedReader;
 import java.io.IOException;
