@@ -12,6 +12,7 @@ import android.accounts.AccountManager;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -33,13 +34,18 @@ import com.google.code.aosddl.report.ws.WsStatusListener;
 public class DeviceReport extends ListActivity {
 	private static final String TAG = DeviceReport.class.getSimpleName();
 
+	// XXX Made these string so they don't change across releases.
+	public static final String EXTRA_EMAIL = "com.google.code.aosddl.report.EMAIL";
+	public static final String EXTRA_REFERENCE = "com.google.code.aosddl.report.REFERENCE";
+	public static final String EXTRA_TAGS = "com.google.code.aosddl.report.TAGS";
+
 	// XXX We keep these here because some of them don't exist in older android
 	// versions. They should match the constants in Configuration -JFBP
-	public static final int SCREENLAYOUT_SIZE_UNDEFINED = 0x00;
-	public static final int SCREENLAYOUT_SIZE_SMALL = 0x01;
-	public static final int SCREENLAYOUT_SIZE_NORMAL = 0x02;
-	public static final int SCREENLAYOUT_SIZE_LARGE = 0x03;
-	public static final int SCREENLAYOUT_SIZE_XLARGE = 0x04;
+	private static final int SCREENLAYOUT_SIZE_UNDEFINED = 0x00;
+	private static final int SCREENLAYOUT_SIZE_SMALL = 0x01;
+	private static final int SCREENLAYOUT_SIZE_NORMAL = 0x02;
+	private static final int SCREENLAYOUT_SIZE_LARGE = 0x03;
+	private static final int SCREENLAYOUT_SIZE_XLARGE = 0x04;
 
 	private EditText emailEditText;
 	private EditText referenceEditText;
@@ -173,15 +179,37 @@ public class DeviceReport extends ListActivity {
 	};
 
 	private void updateInputs() {
-		String packageName = getPackageName();
-		PackageManager packageMan = getPackageManager();
-		if (packageMan.checkPermission("android.permission.GET_ACCOUNTS",
-				packageName) == PackageManager.PERMISSION_GRANTED) {
-			AccountManager accountManager = AccountManager.get(this);
-			Account[] accounts = accountManager.getAccountsByType("com.google");
-			if (accounts.length > 0) {
-				emailEditText.setText(accounts[0].name);
-				// params.put("email", accounts[0].name);
+
+		Intent intent = getIntent();
+		Bundle bundle = intent.getExtras();
+		if (bundle != null) {
+			String extraEmail = bundle.getString(EXTRA_EMAIL);
+			String extraRef = bundle.getString(EXTRA_REFERENCE);
+			String extraTags = bundle.getString(EXTRA_TAGS);
+
+			if (extraEmail != null) {
+				emailEditText.setText(extraEmail);
+			} else {
+				String packageName = getPackageName();
+				PackageManager packageMan = getPackageManager();
+				if (packageMan.checkPermission(
+						"android.permission.GET_ACCOUNTS", packageName) == PackageManager.PERMISSION_GRANTED) {
+					AccountManager accountManager = AccountManager.get(this);
+					Account[] accounts = accountManager
+							.getAccountsByType("com.google");
+					if (accounts.length > 0) {
+						emailEditText.setText(accounts[0].name);
+						// params.put("email", accounts[0].name);
+					}
+				}
+			}
+
+			if (extraRef != null) {
+				referenceEditText.setText(extraRef);
+			}
+
+			if (extraTags != null) {
+				tagsEditText.setText(extraTags);
 			}
 		}
 
