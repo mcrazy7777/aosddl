@@ -9,10 +9,14 @@ import java.util.Set;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -31,6 +35,8 @@ import aosddl.code.google.com.report.ws.WsClient;
 import aosddl.code.google.com.report.ws.WsStatusListener;
 
 public class DeviceReport extends ListActivity {
+	private static final String PREF_SUBMITTED = "submitted";
+
 	private static final String TAG = DeviceReport.class.getSimpleName();
 
 	// XXX Made these string so they don't change across releases.
@@ -45,6 +51,10 @@ public class DeviceReport extends ListActivity {
 	private static final int SCREENLAYOUT_SIZE_NORMAL = 0x02;
 	private static final int SCREENLAYOUT_SIZE_LARGE = 0x03;
 	private static final int SCREENLAYOUT_SIZE_XLARGE = 0x04;
+
+	private static final int DIALOG_PLEASE_WAIT = 0x01;
+	private static final int DIALOG_ALREADY_SUBMITTED = 0x02;
+	private static final int DIALOG_THANKS_FOR_SUBMITTING = 0x03;
 
 	private EditText emailEditText;
 	private EditText referenceEditText;
@@ -84,10 +94,71 @@ public class DeviceReport extends ListActivity {
 		loadParams();
 	}
 
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DIALOG_PLEASE_WAIT:
+			ProgressDialog progress = ProgressDialog.show(DeviceReport.this,
+					"", "Saving. Please wait...", true);
+			// progress.show();
+			return progress;
+		case DIALOG_ALREADY_SUBMITTED:
+			AlertDialog.Builder alreadyBuilder = new AlertDialog.Builder(this);
+			alreadyBuilder
+					.setMessage(
+							"You have already sent us your device specs. Do you want to do it again?")
+					.setCancelable(false)
+					.setPositiveButton("Yes",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									// DeviceReport.this.finish();
+									dialog.cancel();
+									executeSubmit();
+								}
+							})
+					.setNegativeButton("No",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									dialog.cancel();
+								}
+							});
+			AlertDialog alreadysubmittedAlert = alreadyBuilder.create();
+			return alreadysubmittedAlert;
+		case DIALOG_THANKS_FOR_SUBMITTING:
+			AlertDialog.Builder thanksBuilder = new AlertDialog.Builder(this);
+			thanksBuilder
+					.setMessage(
+							"Thanks for submitting your phone's hardware specs to our device library project!")
+					.setCancelable(false)
+					.setPositiveButton("Finish",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									DeviceReport.this.setResult(RESULT_OK);
+									DeviceReport.this.finish();
+								}
+							});
+			AlertDialog thanksForSubmissionAlert = thanksBuilder.create();
+			return thanksForSubmissionAlert;
+		default:
+			return super.onCreateDialog(id);
+		}
+	}
+
 	public void submitButtonClicked(View view) {
-		final ProgressDialog progress = ProgressDialog.show(DeviceReport.this,
-				"", "Saving. Please wait...", true);
-		progress.show();
+		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+		boolean submitted = prefs.getBoolean(PREF_SUBMITTED, false);
+		if (submitted) {
+			showDialog(DIALOG_ALREADY_SUBMITTED);
+		} else {
+			executeSubmit();
+		}
+	}
+
+	private void executeSubmit() {
+		showDialog(DIALOG_PLEASE_WAIT);
 		Runnable submitExec = new Runnable() {
 			@Override
 			public void run() {
@@ -107,7 +178,7 @@ public class DeviceReport extends ListActivity {
 										final String message) {
 									Log.d(TAG, "###### success[" + success
 											+ "] " + message);
-									progress.dismiss();
+									dismissDialog(DIALOG_PLEASE_WAIT);
 									handler.post(new Runnable() {
 
 										@Override
@@ -116,8 +187,13 @@ public class DeviceReport extends ListActivity {
 													message, Toast.LENGTH_LONG)
 													.show();
 											if (success) {
-												setResult(RESULT_OK);
-												finish();
+
+												SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+												prefs.edit()
+														.putBoolean(
+																PREF_SUBMITTED,
+																true).commit();
+												showDialog(DIALOG_THANKS_FOR_SUBMITTING);
 											}
 										}
 									});
@@ -131,7 +207,7 @@ public class DeviceReport extends ListActivity {
 					Toast.makeText(getApplicationContext(), e.getMessage(),
 							Toast.LENGTH_LONG).show();
 				} finally {
-					progress.dismiss();
+					dismissDialog(DIALOG_PLEASE_WAIT);
 				}
 			}
 		};
@@ -140,7 +216,6 @@ public class DeviceReport extends ListActivity {
 		thread.start();
 
 		// handler.post(submitExec);
-
 	}
 
 	public void cancelButtonClicked(View view) {
