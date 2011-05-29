@@ -1,4 +1,4 @@
-package com.google.code.aosddl.report;
+package aosddl.code.google.com.report;
 
 /**
  * This enum is duplicated on the server side. if changed both need to be

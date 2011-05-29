@@ -1,4 +1,4 @@
-package com.google.code.aosddl.report;
+package aosddl.code.google.com.report;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,17 +27,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.code.aosddl.report.ws.WsClient;
-import com.google.code.aosddl.report.ws.WsStatusListener;
+import aosddl.code.google.com.report.ws.WsClient;
+import aosddl.code.google.com.report.ws.WsStatusListener;
 
 public class DeviceReport extends ListActivity {
 	private static final String TAG = DeviceReport.class.getSimpleName();
 
 	// XXX Made these string so they don't change across releases.
-	public static final String EXTRA_EMAIL = "com.google.code.aosddl.report.EMAIL";
-	public static final String EXTRA_REFERENCE = "com.google.code.aosddl.report.REFERENCE";
-	public static final String EXTRA_TAGS = "com.google.code.aosddl.report.TAGS";
+	public static final String EXTRA_EMAIL = "aosddl.code.google.com.report.EMAIL";
+	public static final String EXTRA_REFERENCE = "aosddl.code.google.com.report.REFERENCE";
+	public static final String EXTRA_TAGS = "aosddl.code.google.com.report.TAGS";
 
 	// XXX We keep these here because some of them don't exist in older android
 	// versions. They should match the constants in Configuration -JFBP
