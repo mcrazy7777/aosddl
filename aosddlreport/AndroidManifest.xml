@@ -14,22 +14,19 @@
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
-		</activity>
-
-
-		<activity-alias android:targetActivity="DeviceReport"
-			android:name="DeviceReportLink" android:enabled="true" android:exported="true">
 			<intent-filter>
-				<action android:name="com.google.code.aosddl.REPORT" />
+				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<!-- "market://details?id=com.google.code.aosddl.report" -->
 				<!-- data android:scheme="market" android:host="details"/ -->
-				<data android:scheme="aosddl" android:host="capture" />
+				<!-- data android:scheme="aosddl" android:host="capture" / -->
 				<!-- http://moap.sixgreen.com/intent/com.google.code.aosddl.report -->
 				<data android:scheme="http" android:host="moap.sixgreen.com/intent/aosddl.code.google.com.report" />
+				<data android:scheme="aosddl" android:host="capture" />
 			</intent-filter>
-		</activity-alias>
+			
+		</activity>
 
 	</application>
 </manifest>
