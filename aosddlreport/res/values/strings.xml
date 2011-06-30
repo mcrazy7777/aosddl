@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Device Report</string>
-    <string name="label_email_address">Email Address</string>
-    <string name="label_reference">Reference</string>
-    <string name="label_extra_tags">Extra Tags</string>
-    <string name="label_cancel">Cancel</string>
-    <string name="label_submit">Submit</string>
-</resources>
