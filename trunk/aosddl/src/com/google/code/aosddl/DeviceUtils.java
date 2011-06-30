@@ -4,17 +4,18 @@ import android.util.Log;
 
 public class DeviceUtils {
 
-	private final DeviceType deviceType;
+	// private final DeviceType deviceType;
 
-	public DeviceUtils() {
-		deviceType = DeviceType.detect();
-	}
+	// public DeviceUtils() {
+	// deviceType = DeviceType.detect();
+	// }
 
 	public int scaleTextSize(int size) {
 		int newSize = size;
 
-		if (deviceType != DeviceType.UNKNOWN) {
-			newSize = (int) (deviceType.getTextScaleMultiplier() * size);
+		if (!CapabilityLoader.getCapabilities().isUsingDefaultValues()) {
+			newSize = (int) (CapabilityLoader.getCapabilities()
+					.getTextScaleMultiplier() * size);
 		}
 
 		Log.d("DeviceUtils", "Font size was [" + size + "], scaling to ["
