@@ -1,4 +1,4 @@
 usingDefaultValues=true
 tablet=false
-textScaleMultiplier=1
+textScaleMultiplier=1.0
 validBuildSerial=true

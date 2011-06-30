@@ -1,12 +1,12 @@
 package com.google.code.aosddl;
 
 import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.Properties;
 
 import android.os.Build;
 
 public class CapabilityLoader {
-	private static ResourceBundle bundle;
+	private static Properties bundle;
 
 	public static Capabilities getCapabilities() {
 		if (CapabilityLoader.bundle == null) {
@@ -17,36 +17,35 @@ public class CapabilityLoader {
 			// has a space that our bundle won't like as well. HTC sometimes has
 			// a space in the Build.MODEL. -JFBP
 			Locale deviceId = getDeviceLocale();
-			CapabilityLoader.bundle = ResourceBundle.getBundle("device",
-					deviceId, CapabilityLoader.class.getClassLoader());
+			CapabilityLoader.bundle = ConfigLoader.load(deviceId);
+
+			// ResourceBundle.getBundle("device", deviceId,
+			// CapabilityLoader.class.getClassLoader());
 
 		}
 
 		return new Capabilities() {
 
 			public boolean isUsingDefaultValues() {
-				return Boolean
-						.valueOf(
-								CapabilityLoader.bundle
-										.getString("usingDefaultValues"))
-						.booleanValue();
+				return Boolean.valueOf(
+						CapabilityLoader.bundle.getProperty(
+								"usingDefaultValues", "false")).booleanValue();
 			}
 
 			public Float getTextScaleMultiplier() {
-				return new Float(
-						CapabilityLoader.bundle
-								.getString("textScaleMultiplier"));
+				return new Float(CapabilityLoader.bundle.getProperty(
+						"textScaleMultiplier", "1.0"));
 			}
 
 			public boolean hasValidBuildSerial() {
 				return Boolean.valueOf(
-						CapabilityLoader.bundle.getString("validBuildSerial"))
-						.booleanValue();
+						CapabilityLoader.bundle.getProperty("validBuildSerial",
+								"false")).booleanValue();
 			}
 
 			public boolean isTablet() {
 				return Boolean.valueOf(
-						CapabilityLoader.bundle.getString("tablet"))
+						CapabilityLoader.bundle.getProperty("tablet", "false"))
 						.booleanValue();
 			}
 
@@ -54,8 +53,7 @@ public class CapabilityLoader {
 	}
 
 	public static Locale getDeviceLocale() {
-		return new Locale(
-				normilizeManufacturer(Build.MANUFACTURER),
+		return new Locale(normilizeManufacturer(Build.MANUFACTURER),
 				normilizeDevice(Build.DEVICE), normilizeModel(Build.MODEL));
 	}
 
