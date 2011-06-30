@@ -1,6 +1,5 @@
 package com.google.code.aosddl;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +30,15 @@ public class ConfigLoader {
 			try {
 				InputStream in = ConfigLoader.class
 						.getResourceAsStream(fileName);
-				Properties p = new Properties();
-				p.load(in);
-				master.putAll(p);
-			} catch (IOException e) {
+				if (in != null) {
+					Log.d(TAG, "Device definition included: " + fileName);
+					Properties p = new Properties();
+					p.load(in);
+					master.putAll(p);
+				} else {
+					Log.d(TAG, "Device definition not found: " + fileName);
+				}
+			} catch (Exception e) {
 				// ignored... likely not defined.
 				// XXX Not sure I like depending on the exception.
 				Log.d(TAG, "Device definition not found: " + fileName);
